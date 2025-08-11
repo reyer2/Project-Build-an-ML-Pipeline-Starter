@@ -7,6 +7,7 @@ import wandb
 import hydra
 from omegaconf import DictConfig
 
+wandb.init(mode="offline")
 _steps = [
     "download",
     "basic_cleaning",
