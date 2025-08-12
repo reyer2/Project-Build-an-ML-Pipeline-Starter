@@ -103,6 +103,7 @@ def go(config: DictConfig):
                 "src/train_random_forest",
                 entry_point="main",
                 env_manager="conda",
+                version=none
                 parameters={
                     "trainval_artifact": "trainval_data.csv:latest",
                     "val_size": config["modeling"]["val_size"],
