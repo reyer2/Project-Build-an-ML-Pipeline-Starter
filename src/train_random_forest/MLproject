@@ -1,4 +1,4 @@
-name: download_file
+name: train_random_forest
 conda_env: conda.yml
 
 entry_points:
@@ -11,11 +11,11 @@ entry_points:
 
       val_size:
         description: Size of the validation split. Fraction of the dataset, or number of items
-        type: string
+        type: float
 
       random_seed:
         description: Seed for the random number generator. Use this for reproducibility
-        type: string
+        type: int
         default: 42
 
       stratify_by:
@@ -30,7 +30,7 @@ entry_points:
 
       max_tfidf_features:
         description: Maximum number of words to consider for the TFIDF
-        type: string
+        type: int
 
       output_artifact:
         description: Name for the output artifact
@@ -44,3 +44,4 @@ entry_points:
                     --rf_config {rf_config} \
                     --max_tfidf_features {max_tfidf_features} \
                     --output_artifact {output_artifact}
+
