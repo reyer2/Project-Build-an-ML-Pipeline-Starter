@@ -99,10 +99,10 @@ def go(config: DictConfig):
             with open(rf_config, "w+") as fp:
                 json.dump(dict(config["modeling"]["random_forest"].items()), fp)
 
+            # Run train_random_forest locally from src/train_random_forest folder
             _ = mlflow.run(
-                f"{config['main']['components_repository']}/train_random_forest",
+                "./src/train_random_forest",
                 "main",
-                version="main",
                 env_manager="conda",
                 parameters={
                     "trainval_artifact": "trainval_data.csv:latest",
@@ -124,3 +124,4 @@ def go(config: DictConfig):
 
 if __name__ == "__main__":
     go()
+
