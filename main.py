@@ -100,7 +100,7 @@ def go(config: DictConfig):
 
             # Run train_random_forest locally from src/train_random_forest folder (no git repo fetch)
             _ = mlflow.run(
-                "src/train_random_forest",
+                ".",
                 entry_point="main",
                 env_manager="conda",
                 version=None,
