@@ -1,4 +1,5 @@
 name: nyc_airbnb
+
 conda_env: conda.yml
 
 entry_points:
@@ -32,8 +33,7 @@ workflows:
         input_artifact: raw_data.tgz:latest
         output_artifact: cleaned_data.csv
         output_type: cleaned_data
-        output_description: >
-          Data with basic cleaning, ready for further processing.
+        output_description: "Data with basic cleaning, ready for further processing."
 
     - name: data_checks
       uri: https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter.git#components/data_checks
@@ -54,3 +54,15 @@ workflows:
         artifact_description: "Split of the original dataset"
         test_size: {split.test_size}
         stratify_by: {split.stratify_by}
+
+    - name: train_random_forest
+      uri: ./src/train_random_forest
+      parameters:
+        trainval_artifact: train_val_test_data.zip:latest
+        val_size: {modeling.val_size}
+        random_seed: {modeling.random_seed}
+        stratify_by: {modeling.stratify_by}
+        rf_config: rf_config.json
+        max_tfidf_features: {modeling.max_tfidf_features}
+        output_artifact: random_forest_export
+
