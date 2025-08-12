@@ -68,10 +68,10 @@ def go(config: DictConfig):
             )
 
         if "data_check" in active_steps:
+            # Run data_check locally from src/data_check folder
             _ = mlflow.run(
-                f"{config['main']['components_repository']}/data_check",
+                "src/data_check",
                 "main",
-                version="main",
                 env_manager="conda",
                 parameters={
                     "csv": "clean_sample.csv:latest",
@@ -105,3 +105,4 @@ def go(config: DictConfig):
 
 if __name__ == "__main__":
     go()
+
