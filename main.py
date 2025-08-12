@@ -68,7 +68,6 @@ def go(config: DictConfig):
             )
 
         if "data_check" in active_steps:
-            # Run data_check locally from src/data_check folder
             _ = mlflow.run(
                 ".",
                 "main",
@@ -99,10 +98,10 @@ def go(config: DictConfig):
             with open(rf_config, "w+") as fp:
                 json.dump(dict(config["modeling"]["random_forest"].items()), fp)
 
-            # Run train_random_forest locally from src/train_random_forest folder
+            # Run train_random_forest locally from src/train_random_forest folder (no git repo fetch)
             _ = mlflow.run(
-                "./src/train_random_forest",
-                "main",
+                "src/train_random_forest",
+                entry_point="main",
                 env_manager="conda",
                 parameters={
                     "trainval_artifact": "trainval_data.csv:latest",
@@ -111,7 +110,7 @@ def go(config: DictConfig):
                     "stratify_by": config["modeling"]["stratify_by"],
                     "rf_config": rf_config,
                     "max_tfidf_features": config["modeling"]["max_tfidf_features"],
-                    "output_artifact": "model_export",
+                    "output_artifact": "random_forest_export",
                 },
             )
 
