@@ -70,7 +70,7 @@ def go(config: DictConfig):
         if "data_check" in active_steps:
             # Run data_check locally from src/data_check folder
             _ = mlflow.run(
-                "src/data_check",
+                ".",
                 "main",
                 env_manager="conda",
                 parameters={
