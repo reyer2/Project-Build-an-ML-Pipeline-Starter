@@ -15,9 +15,7 @@ _steps = [
     "data_check",
     "data_split",
     "train_random_forest",
-
 ]
-
 
 # This automatically reads in the configuration
 @hydra.main(config_name='config')
@@ -70,10 +68,17 @@ def go(config: DictConfig):
             )
 
         if "data_check" in active_steps:
-            ##################
-            # Implement here #
-            ##################
-            pass
+            _ = mlflow.run(
+                f"{config['main']['components_repository']}/data_check",
+                "main",
+                version="main",
+                env_manager="conda",
+                parameters={
+                    "csv": "clean_sample.csv:latest",
+                    "ref": "clean_sample.csv:reference",
+                    "kl_threshold": config["data_check"]["kl_threshold"],
+                },
+            )
 
         if "data_split" in active_steps:
             ##################
