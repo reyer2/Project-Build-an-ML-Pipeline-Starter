@@ -15,7 +15,7 @@ entry_points:
         type: str
         default: ''
 
-    command: "python main.py main.steps='{steps}' $(echo {hydra_options})"
+    command: "python main.py steps={steps} {hydra_options}"
 
 workflows:
   main:
@@ -65,4 +65,5 @@ workflows:
         rf_config: rf_config.json
         max_tfidf_features: {modeling.max_tfidf_features}
         output_artifact: random_forest_export
+
 
