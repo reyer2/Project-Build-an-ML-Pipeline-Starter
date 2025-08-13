@@ -17,7 +17,6 @@ _steps = [
     "train_random_forest",
 ]
 
-# This automatically reads in the configuration
 @hydra.main(config_name='config')
 def go(config: DictConfig):
     """
@@ -26,15 +25,12 @@ def go(config: DictConfig):
     to each MLflow project step as defined in the config file.
     """
 
-    # Setup the wandb experiment. All runs will be grouped under this name
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
     os.environ["WANDB_RUN_GROUP"] = config["main"]["experiment_name"]
 
-    # Steps to execute
     steps_par = config['main']['steps']
     active_steps = steps_par.split(",") if steps_par != "all" else _steps
 
-    # Move to a temporary directory
     with tempfile.TemporaryDirectory() as tmp_dir:
 
         if "download" in active_steps:
@@ -53,9 +49,8 @@ def go(config: DictConfig):
 
         if "basic_cleaning" in active_steps:
             _ = mlflow.run(
-                f"{config['main']['components_repository']}/basic_cleaning",
+                os.path.join(hydra.utils.get_original_cwd(), "src", "basic_cleaning"),
                 "main",
-                version='main',
                 env_manager="conda",
                 parameters={
                     "input_artifact": config["basic_cleaning"]["input_artifact"],
@@ -69,7 +64,7 @@ def go(config: DictConfig):
 
         if "data_check" in active_steps:
             _ = mlflow.run(
-                ".",
+                os.path.join(hydra.utils.get_original_cwd(), "src", "data_check"),
                 "main",
                 env_manager="conda",
                 parameters={
@@ -96,14 +91,12 @@ def go(config: DictConfig):
         if "train_random_forest" in active_steps:
             rf_config = os.path.abspath("rf_config.json")
             with open(rf_config, "w+") as fp:
-                json.dump(dict(config["modeling"]["random_forest"].items()), fp)
+                json.dump(dict(config["modeling"]["random_forest"].items()), fp)  # DO NOT TOUCH
 
-            # Run train_random_forest locally from src/train_random_forest folder (no git repo fetch)
             _ = mlflow.run(
-                ".",
+                os.path.join(hydra.utils.get_original_cwd(), "src", "train_random_forest"),
                 entry_point="main",
                 env_manager="conda",
-                version=None,
                 parameters={
                     "trainval_artifact": "trainval_data.csv:latest",
                     "val_size": config["modeling"]["val_size"],
@@ -124,4 +117,3 @@ def go(config: DictConfig):
 
 if __name__ == "__main__":
     go()
-
