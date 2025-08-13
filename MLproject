@@ -15,7 +15,7 @@ entry_points:
         type: str
         default: ''
 
-    command: "python main.py steps={steps} {hydra_options}"
+    command: "python main.py steps='{steps}' $(echo {hydra_options})"
 
 workflows:
   main:
