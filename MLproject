@@ -1,10 +1,10 @@
 name: nyc_airbnb
-
 conda_env: conda.yml
 
 entry_points:
   main:
     parameters:
+
       steps:
         description: Comma-separated list of steps to execute (useful for debugging)
         type: str
@@ -15,55 +15,4 @@ entry_points:
         type: str
         default: ''
 
-    command: "python main.py +steps='{steps}' $(echo {hydra_options})"
-
-workflows:
-  main:
-    - name: get_data
-      uri: ./components/get_data
-      parameters:
-        sample: ${datastore.raw_data_sample}
-        artifact_name: raw_data.tgz
-        artifact_type: raw_data
-        artifact_description: "Raw file as downloaded"
-
-    - name: basic_cleaning
-      uri: ./src/basic_cleaning
-      parameters:
-        input_artifact: raw_data.tgz:latest
-        output_artifact: cleaned_data.csv
-        output_type: cleaned_data
-        output_description: "Data with basic cleaning, ready for further processing."
-
-    - name: data_checks
-      uri: https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter.git#components/data_checks
-      parameters:
-        input_artifact: cleaned_data.csv:latest
-        ref_artifact: "{datastore.ref_data}:latest"
-        csv_url: "{datastore.reference_dataset}"
-        min_price: {data_checks.min_price}
-        max_price: {data_checks.max_price}
-
-    - name: data_split
-      uri: https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter.git#components/train_val_test_split
-      parameters:
-        input_artifact: cleaned_data.csv:latest
-        artifact_root: data
-        artifact_name: train_val_test_data.zip
-        artifact_type: split_data
-        artifact_description: "Split of the original dataset"
-        test_size: {split.test_size}
-        stratify_by: {split.stratify_by}
-
-    - name: train_random_forest
-      uri: ./src/train_random_forest
-      parameters:
-        trainval_artifact: train_val_test_data.zip:latest
-        val_size: {modeling.val_size}
-        random_seed: {modeling.random_seed}
-        stratify_by: {modeling.stratify_by}
-        rf_config: rf_config.json
-        max_tfidf_features: {modeling.max_tfidf_features}
-        output_artifact: random_forest_export
-
-
+    command: "python main.py main.steps=\\'{steps}\\' $(echo {hydra_options})"
