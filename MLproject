@@ -28,7 +28,7 @@ workflows:
         artifact_description: "Raw file as downloaded"
 
     - name: basic_cleaning
-      uri: https://github.com/udacity/Project-Build-an-ML-Pipeline-Starter.git#components/basic_cleaning
+      uri: ./src/basic_cleaning
       parameters:
         input_artifact: raw_data.tgz:latest
         output_artifact: cleaned_data.csv
