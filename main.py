@@ -57,8 +57,8 @@ def go(config: DictConfig):
                     "output_artifact": config["basic_cleaning"]["output_artifact"],
                     "output_type": config["basic_cleaning"]["output_type"],
                     "output_description": config["basic_cleaning"]["output_description"],
-                    "min_price": float(config["basic_cleaning"]["min_price"]),
-                    "max_price": float(config["basic_cleaning"]["max_price"])
+                    "min_price": config["basic_cleaning"]["min_price"],
+                    "max_price": config["basic_cleaning"]["max_price"]
                 },
             )
 
