@@ -14,8 +14,8 @@ basic_cleaning:
   output_artifact: "clean_sample.csv"
   output_type: "cleaned_data"
   output_description: "Cleaned dataset"
-  min_price: 10.0
-  max_price: 350.0
+  min_price: 10
+  max_price: 350
 
 data_check:
   kl_threshold: 0.2
