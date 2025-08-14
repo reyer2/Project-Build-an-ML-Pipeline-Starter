@@ -79,7 +79,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--min_price", 
         type=float,
-        required=True,
+        required=False,
         default=10.0,  # default value
         help="Minimum price threshold to keep a listing (default: 10.0)"
     )
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--max_price",
         type=float,
-        required=True,
+        required=False,
         default=350.0,  # default value
         help="Maximum price threshold to keep a listing (default: 350.0)"
     )
